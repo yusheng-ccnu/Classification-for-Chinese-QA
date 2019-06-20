@@ -72,7 +72,7 @@ filter_length = 2
 nb_epoch = 100
 n_pool = 2
 
-IS_TRAIN = True
+IS_TRAIN = False
 if IS_TRAIN:
     # 新建一个sequential的模型
     model = Sequential()
@@ -85,14 +85,15 @@ if IS_TRAIN:
     model.add(Dense(128))
     model.add(Activation('relu'))
     model.add(Dropout(0.5))
-    model.add(Dense(6))
+    model.add(Dense(7))
     model.add(Activation('softmax'))
     # compile模型
     sgd = SGD(lr=0.01, decay=1e-4, momentum=0.9, nesterov=True)
     model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
     model.fit(x_train, y_train, batch_size=batch_size, epochs=nb_epoch, verbose=2)
-    model.save('../models/nn_model.h5')
+    model.save('../models/cnn_model.h5')
     evaluate(model, x_test, y_test)
 else:
-    model = load_data('../models/nn_model.h5')
+    model = load_model('../models/cnn_model.h5')
     evaluate(model, x_test, y_test)
+    print(model.layers[-1].weights)
